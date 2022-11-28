@@ -27,3 +27,4 @@ VALUES
     ('David', 'Collin', 5, 1),
     ('Nick', 'Sparks', 6, 1);
 
+-- SELECT e.first_name, e.last_name, r.title, d.department_name AS department, r.salary, CONCAT(e.first_name, ' ', e.last_name) AS manager FROM employee AS e LEFT JOIN role AS r ON e.role_id = r.id LEFT JOIN department AS d ON r.department_id = d.id LEFT JOIN employee manager ON e.manager_id = e.id GROUP BY e.id;

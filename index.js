@@ -1,36 +1,6 @@
 const mysql = require("mysql2");
 const inquirer = require("inquirer");
 const db = require("./db/connection");
-// let roleChoices = [];
-// let employeeChoices = [];
-// let roleArry = [];
-// let employeeArry = [];
-
-// db.query("SELECT * FROM role", (err, results) => {
-//   roleChoices.push(results);
-//   for (let i = 0; i < roleChoices[0].length; i++) {
-//     let roleObj = {
-//       name: roleChoices[0][i].title,
-//       value: roleChoices[0][i].id,
-//     };
-//     roleArry.push(roleObj);
-//   }
-//   console.log('inside', roleArry);
-// });
-
-// console.log('outside',roleArry);
-
-// db.query("SELECT * FROM employee", (err, results) => {
-//   employeeChoices.push(results);
-//   for (let i = 0; i < employeeChoices[0].length; i++) {
-//     let employeeObj = {
-//       name: employeeChoices[0][i].title,
-//       value: employeeChoices[0][i].id,
-//     };
-//     employeeArry.push(employeeObj);
-//   }
-// });
-// console.log(employeeArry);
 
 function init() {
   inquirer
@@ -82,15 +52,9 @@ function init() {
     .catch((err) => console.log(err));
 }
 
-// Questions to ask:
-// how to fix repeating codes?
-// how to set null if no manager in func viewAllEmployee
-// func addEmp -- problem with manager
-
-// To view all employees
 function viewAllEmployees() {
   db.query(
-    "SELECT e.first_name AS first_name, e.last_name AS last_name, r.title AS title, d.department_name AS department, r.salary AS salary, CONCAT(e.first_name, ' ', e.last_name) AS manager FROM employee AS e LEFT JOIN role AS r ON e.role_id = r.id LEFT JOIN department AS d ON r.department_id = d.id LEFT JOIN employee manager ON e.manager_id = e.id GROUP BY e.id;",
+    "SELECT e.first_name, e.last_name, r.title, d.department_name AS department, r.salary, e.manager_id FROM employee AS e LEFT JOIN role AS r ON e.role_id = r.id LEFT JOIN department AS d ON r.department_id = d.id LEFT JOIN employee manager ON e.manager_id = e.id GROUP BY e.id;",
     (err, results) => {
       console.log("\n");
       console.table(results);
@@ -99,7 +63,6 @@ function viewAllEmployees() {
   );
 }
 
-// To add employee
 function addEmployee() {
   let roleChoices = [];
   db.query("SELECT * FROM role", (err, results) => {
@@ -244,7 +207,6 @@ function addRole() {
     });
 }
 
-// this is sett!!!
 function viewAllDepartment() {
   db.query("SELECT * FROM department", (err, results) => {
     console.log("\n");
@@ -253,7 +215,6 @@ function viewAllDepartment() {
   });
 }
 
-// DONE
 function addDepartment() {
   inquirer
     .prompt([
